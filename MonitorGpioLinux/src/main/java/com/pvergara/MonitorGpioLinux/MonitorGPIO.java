@@ -58,15 +58,15 @@ public class MonitorGPIO {
 	private void checkingChange(final GpioDto gpio) {
 		try {
 			String valorNuevo = currentStatus(Files.lines(pathSystemGpio(gpio)));
-			Boolean estadoNuevo;
+			Boolean newStatus;
 			if (valorNuevo.contains("1")) {
-				estadoNuevo = true;
+				newStatus = Boolean.TRUE;
 			} else {
-				estadoNuevo = false;
+				newStatus = Boolean.FALSE;
 			}
 			GpioDto ultimoValor = lastStates.get(gpio.getPinNumber());
-			if (lastStates.containsKey(gpio.getPinNumber()) == Boolean.FALSE || ultimoValor.getStatus().equals(estadoNuevo) == Boolean.FALSE) {				
-				gpio.setStatus(estadoNuevo);
+			if (lastStates.containsKey(gpio.getPinNumber()) == Boolean.FALSE || ultimoValor.getStatus().equals(newStatus) == Boolean.FALSE) {				
+				gpio.setStatus(newStatus);
 				lastStates.put(gpio.getPinNumber(), gpio);				
 				final Thread hiloCallback = new Thread(() -> runCallback(gpio));
 				hiloCallback.start();
